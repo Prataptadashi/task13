@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Testimonial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.12.1/framer-motion.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+        .light-mode {
+            background-color: #fcfcfc;
+            color: black;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+        .dark-mode .container {
+            background: #333;
+            color: white;
+        }
+        .testRow {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .testItem {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .testItem.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .testItem img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .stars {
+            color: gold;
+            font-size: 20px;
+            margin: 5px 0;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .btn {
+            background: #006994;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #005577;
+        }
+        .indicators {
+            margin-top: 10px;
+        }
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .dot.active {
+            background-color: #006994;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .dark-mode .theme-toggle {
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="container">
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+        <h1>Testimonial</h1>
+        <div class="testRow">
+            <div class="testItem active">
+                <img src="model-1.jpg">
+                <h3>Jane Doe</h3>
+                <h4>San Francisco, USA</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="testItem">
+                <img src="model-2.jpg">
+                <h3>John Smith</h3>
+                <h4>New York, USA</h4>
+                <p>Vestibulum ante ipsum primis in faucibus orci luctus et.</p>
+                <div class="stars">★★★★☆</div>
+            </div>
+            <div class="testItem">
+                <img src="model-3.jpg">
+                <h3>Alice Johnson</h3>
+                <h4>London, UK</h4>
+                <p>Curabitur cursus erat ac justo consequat, a tempus.</p>
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="testItem">
+                <img src="model-4.jpg">
+                <h3>Robert Brown</h3>
+                <h4>Toronto, Canada</h4>
+                <p>Pellentesque habitant morbi tristique senectus et.</p>
+                <div class="stars">★★★★☆</div>
+            </div>
+            <div class="testItem">
+                <img src="model-5.jpg">
+                <h3>Emily Davis</h3>
+                <h4>Sydney, Australia</h4>
+                <p>Aliquam erat volutpat. Praesent nec tortor vitae.</p>
+                <div class="stars">★★★★★</div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="btn" onclick="prevSlide()">Previous</button>
+            <button class="btn" onclick="nextSlide()">Next</button>
+        </div>
+        <div class="indicators">
+            <span class="dot active" onclick="switchTest(0)"></span>
+            <span class="dot" onclick="switchTest(1)"></span>
+            <span class="dot" onclick="switchTest(2)"></span>
+            <span class="dot" onclick="switchTest(3)"></span>
+            <span class="dot" onclick="switchTest(4)"></span>
+        </div>
+    </div>
+    <script>
+        let counter = 0;
+        const slides = document.querySelectorAll('.testItem');
+        const dots = document.querySelectorAll('.dot');
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === counter);
+                dots[index].classList.toggle('active', index === counter);
+            });
+        }
+        function nextSlide() {
+            counter = (counter + 1) % slides.length;
+            updateSlides();
+        }
+        function prevSlide() {
+            counter = (counter - 1 + slides.length) % slides.length;
+            updateSlides();
+        }
+        function switchTest(index) {
+            counter = index;
+            updateSlides();
+        }
+        setInterval(nextSlide, 4000);
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+        }
+    </script>
+</body>
+</html>
